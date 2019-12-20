@@ -47,4 +47,20 @@ class Chip8{
             randByte = std::uniform_int_distribution<uint8_t>(0, 255U);
         }
         void LoadROM(char const* filename);
+
+		// Instructions
+		void OP_00E0(); // CLS: Clear the display
+		void OP_00EE(); // RET: Return from a subroutine
+		void OP_1nnn(); // 1nnn: JP addr
+		void OP_2nnn(); // 2nnn: CALL addr
+		void OP_3xkk(); // 3xkk: SE Vx, byte
+		void OP_4xkk(); // 4xkk: SNE Vx, byte
+		void OP_5xy0(); // 5xy0: SE Vx, Vy
+		void OP_6xkk(); // 6xkk: LD Vx, byte
+		void OP_7xkk(); // 7xkk: ADD Vx, byte
+		void OP_8xy0(); // 8xy0: LD Vx, Vy
+		void OP_8xy1(); // 8xy1: OR Vx, Vy
+		void OP_8xy2(); // 8xy2: AND Vx, Vy
+		void OP_8xy3(); // 8xy3: XOR Vx, Vy
+		void OP_8xy4(); // 8xy4: ADD Vx, Vy
 };
