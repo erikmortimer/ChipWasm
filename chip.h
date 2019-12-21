@@ -63,4 +63,21 @@ class Chip8{
 		void OP_8xy2(); // 8xy2: AND Vx, Vy
 		void OP_8xy3(); // 8xy3: XOR Vx, Vy
 		void OP_8xy4(); // 8xy4: ADD Vx, Vy
+		void OP_8xy5(); // 8xy5: SUB Vx, Vy
+		void OP_8xy6(); // 8xy6: SHR Vx
+		void OP_8xy7(); // 8xy7: SUBN Vx, Vy
+		void OP_8xyE(); // 8xyE: SHL Vx {, Vy}
+		void OP_9xy0(); // 9xy0: SNE Vx, V	void OP_9xy0(); // 9xy0: SNE Vx, Vy
+		void OP_Annn(); // Annn: LD I, addr
+		void OP_Bnnn(); // Bnnn: JP V0, addr
+		void OP_Cxkk(); // Cxkk: RND Vx, byte
+		void OP_Dxyn(); // Dxyn: DRW Vx, Vy, nibble
+		void OP_Ex9E(); // Ex9E: SKP Vx
+		void OP_ExA1(); // ExA1: SKNP Vx
+		void OP_Fx07(); // Fx07: LD Vx, DT
+		void OP_Fx0A(); // Fx0A: LD Vx, K
+		void OP_Fx15(); // Fx15: LD DT, Vx
+		void OP_Fx18(); // Fx18: LD ST, Vx
+		void OP_Fx1E(); // Fx1E: ADD I, Vx
+		void OP_Fx29(); // Fx29: LD F, Vx
 };
