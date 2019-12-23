@@ -22,6 +22,26 @@ void Chip8::LoadROM(char const* filename){
     }
 }
 
+// Fetch, Decode, and Execute
+void Chip8::Cycle(){
+	// Fetch
+	opcode = (memory[pc] << 8u) | memory[pc + 1];
+
+	// Increment the PC before we execute anything
+	pc += 2;
+
+	// Decode and Execute
+	((*this).*(table[(opcode & 0xF000u) >> 12u]))();
+
+	// Decrement the delay timer if it's been set
+	if (delayTimer > 0)
+		--delayTimer;
+	
+	// Decrement he sound timer if it's been set
+	if (soundTimer > 0)
+		--soundTimer;
+}
+
 // 00E0: CLS
 // Clear the display
 void Chip8::OP_00E0(){
@@ -74,8 +94,8 @@ void Chip8::OP_4xkk(){
 // 5xy0: SE Vx, Vy
 // Skip next instruction if Vx = Vy
 void Chip8::OP_5xy0(){
-	uint8_t Vx = (opcode * 0x0F00u) >> 8u;
-	uint8_t Vy = (opcode * 0x00F0u) >> 4u;
+	uint8_t Vx = (opcode & 0x0F00u) >> 8u;
+	uint8_t Vy = (opcode & 0x00F0u) >> 4u;
 	if (registers[Vx] == registers[Vy]){
 		pc += 2;
 	}
@@ -110,7 +130,7 @@ void Chip8::OP_8xy0(){
 void Chip8::OP_8xy1(){
 	uint8_t Vx = (opcode & 0x0F00u) >> 8u;
 	uint8_t Vy = (opcode & 0x00F0u) >> 4u;
-	registers[Vx] != registers[Vy];
+	registers[Vx] |= registers[Vy];
 }
 
 // 8xy2: AND Vx, Vy

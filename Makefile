@@ -1,8 +1,9 @@
 CXX = g++
 CXXFLAGS = -Wall 
 
-chip: chip.o
-	$(CXX) $(CXXFLAGS) -o chip chip.o
+main: main.o chip.o
+	$(CXX) $(CXXFLAGS) -o chip main.o chip.o `sdl2-config --cflags --libs`
 
-chip.o: chip.cpp chip.h
-	$(CXX) $(CXXFLAGS) -c chip.cpp
+chip.o: chip.h
+
+
