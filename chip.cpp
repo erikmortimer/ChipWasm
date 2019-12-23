@@ -1,15 +1,5 @@
 #include "chip.h"
 
-Chip8::Chip8(){
-    // Init PC
-    pc = START_ADDRESS;
-
-    // Load the Font into memory
-    for(unsigned int i = 0; i < FONTSET_SIZE; ++i){
-        memory[FONTSET_START_ADDRESS + i] = fontset[i];
-    }
-}
-
 void Chip8::LoadROM(char const* filename){
     std::ifstream file(filename, std::ios::binary | std::ios::ate);
     if(file.is_open()){
@@ -250,7 +240,7 @@ void Chip8::OP_Dxyn(){
 
 	// Wrap if going beyond screen boundaries
 	uint8_t xPos = registers[Vx] % VIDEO_WIDTH;
-	uint8_t yPox = registers[Vy] % VIDEO_HEIGHT;
+	uint8_t yPos = registers[Vy] % VIDEO_HEIGHT;
 
 	registers[0xF] = 0;
 
@@ -367,4 +357,38 @@ void Chip8::OP_Fx29(){
 	uint8_t Vx = (opcode & 0x0F00u) >> 8u;
 	uint8_t digit = registers[Vx];
 	index = FONTSET_START_ADDRESS + (5 * digit);
+}
+
+// Fx33: LD B, Vx
+// Store BCD representation of Vx in memory locations I, I+1, and I+2
+void Chip8::OP_Fx33(){
+	uint8_t Vx = (opcode & 0x0F00u) >> 8u;
+	uint8_t value = registers[Vx];
+
+	// Ones-place
+	memory[index + 2] = value % 10;
+	value /= 10;
+
+	// Tens-place
+	memory[index + 1] = value % 10;
+	value /= 10;
+
+	// Hundreds-place
+	memory[index] = value % 10;
+}
+
+// Fx55: LD [I], Vx
+// Store registers V0 through Vx in memory starting at location I
+void Chip8::OP_Fx55(){
+	uint8_t Vx = (opcode & 0x0F00u) >> 8u;
+	for(uint8_t i = 0; i <= Vx; ++i)
+		memory[index + i] = registers[i];
+}
+
+// Fx65: LD Vx, [I]
+// Read registers V0 through Vx from memory starting at location I
+void Chip8::OP_Fx65(){
+	uint8_t Vx = (opcode & 0x0F00u) >> 8u;
+	for(uint8_t i = 0; i <= Vx; ++i)
+		registers[i] = memory[index + i];
 }

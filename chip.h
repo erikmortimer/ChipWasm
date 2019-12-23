@@ -1,12 +1,15 @@
 #pragma once
 
 #include <fstream>
+#include <cstring>
 #include <chrono>
 #include <random>
 
 const unsigned int START_ADDRESS = 0x200;
 const unsigned int FONTSET_START_ADDRESS = 0x50;
 const unsigned int FONTSET_SIZE = 80;
+const unsigned int VIDEO_WIDTH = 64;
+const unsigned int VIDEO_HEIGHT = 32;
 
 class Chip8{
     private:
@@ -45,6 +48,14 @@ class Chip8{
         Chip8() : randGen(std::chrono::system_clock::now().time_since_epoch().count()){
             // Init RNG
             randByte = std::uniform_int_distribution<uint8_t>(0, 255U);
+
+			// Init PC
+    		pc = START_ADDRESS;
+
+    		// Load the Font into memory
+    		for(unsigned int i = 0; i < FONTSET_SIZE; ++i){
+       			memory[FONTSET_START_ADDRESS + i] = fontset[i];
+    		}
         }
         void LoadROM(char const* filename);
 
@@ -80,4 +91,7 @@ class Chip8{
 		void OP_Fx18(); // Fx18: LD ST, Vx
 		void OP_Fx1E(); // Fx1E: ADD I, Vx
 		void OP_Fx29(); // Fx29: LD F, Vx
+		void OP_Fx33(); // Fx33: LD B, Vx
+		void OP_Fx55(); // Fx55: LD [I], Vx
+		void OP_Fx65(); // Fx65: LD Vx, [I]
 };
