@@ -13,8 +13,8 @@ int main(int argc, char* argv[]){
     }*/
 
     int videoScale = 10;//std::stoi(argv[1]);
-    int cycleDelay = 1;//std::stoi(argv[2]);
-    char const* romFilename = "test_opcode.ch8";//argv[3];
+    int cycleDelay = 10;//std::stoi(argv[2]);
+    char const* romFilename = "../../roms/BRIX";//argv[3];
 
     Platform platform("Chip-8 Emulator", VIDEO_WIDTH * videoScale, VIDEO_HEIGHT * videoScale, VIDEO_WIDTH, VIDEO_HEIGHT);
     Chip8 chip;
@@ -37,4 +37,7 @@ int main(int argc, char* argv[]){
             platform.Update(chip.video, videoPitch);
         }
     }
+
+    SDL_Quit();
+    return 0;
 }

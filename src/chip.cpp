@@ -13,7 +13,7 @@ void Chip8::LoadROM(char const* filename){
         file.close();
 
         // Load ROM into Chip8 memory
-        for(long i = 0; i < size; i++){
+        for(long i = 0; i < size; ++i){
             memory[START_ADDRESS + i] = buffer[i];
         }
 
@@ -248,7 +248,7 @@ void Chip8::OP_Bnnn(){
 void Chip8::OP_Cxkk(){
 	uint8_t Vx = (opcode & 0x0F00u) >> 8u;
 	uint8_t byte = opcode & 0x00FFu;
-	registers[Vx] = randByte(randGen) & byte;
+	registers[Vx] = 5 & byte;
 }
 
 // Dxyn: DRW Vx, Vy, nibble

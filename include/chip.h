@@ -5,7 +5,8 @@
 #include <cstdint>
 #include <chrono>
 #include <random>
-#include <SDL2/SDL.h>
+#include <ctime>
+#include "SDL.h"
 
 const unsigned int START_ADDRESS = 0x200;
 const unsigned int FONTSET_START_ADDRESS = 0x50;
@@ -44,8 +45,6 @@ class Chip8{
         uint8_t keypad[16]{};
         uint32_t video[64 * 32]{};
         uint16_t opcode;
-        std::default_random_engine randGen;
-        std::uniform_int_distribution<uint8_t> randByte;
 
 		void Table0(){
 			((*this).*(table0[opcode & 0x000Fu]))();
@@ -70,10 +69,7 @@ class Chip8{
 		Chip8Func tableE[0xE + 1]{&Chip8::OP_NULL};
 		Chip8Func tableF[0x65 + 1]{&Chip8::OP_NULL};
 
-        Chip8() : randGen(std::chrono::system_clock::now().time_since_epoch().count()){
-            // Init RNG
-            randByte = std::uniform_int_distribution<uint8_t>(0, 255U);
-
+        Chip8(){
 			// Init PC
     		pc = START_ADDRESS;
 
@@ -165,6 +161,9 @@ class Chip8{
 		void OP_Fx33(); // Fx33: LD B, Vx
 		void OP_Fx55(); // Fx55: LD [I], Vx
 		void OP_Fx65(); // Fx65: LD Vx, [I]
+
+		//Seed rng
+		//srand(time(NULL));
 };
 
 class Platform{
@@ -175,7 +174,7 @@ class Platform{
     public:
         Platform(char const* title, int windowWidth, int windowHeight, int textureWidth, int textureHeight){
             SDL_Init(SDL_INIT_VIDEO);
-			window = SDL_CreateWindow(title, 0, 0, windowWidth, windowHeight, SDL_WINDOW_SHOWN);
+			window = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, windowWidth, windowHeight, SDL_WINDOW_SHOWN);
 			renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 			texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, textureWidth, textureHeight);
         }
