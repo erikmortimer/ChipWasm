@@ -7,14 +7,14 @@
 #include "chip.h"
 
 int main(int argc, char* argv[]){
-    if(argc != 4){
+    /*if(argc != 4){
         std::cerr << "Usage: " << argv[0] << " <scale> <delay> <ROM>\n";
         std::exit(EXIT_FAILURE);
-    }
+    }*/
 
-    int videoScale = std::stoi(argv[1]);
-    int cycleDelay = std::stoi(argv[2]);
-    char const* romFilename = argv[3];
+    int videoScale = 10;//std::stoi(argv[1]);
+    int cycleDelay = 1;//std::stoi(argv[2]);
+    char const* romFilename = "test_opcode.ch8";//argv[3];
 
     Platform platform("Chip-8 Emulator", VIDEO_WIDTH * videoScale, VIDEO_HEIGHT * videoScale, VIDEO_WIDTH, VIDEO_HEIGHT);
     Chip8 chip;
