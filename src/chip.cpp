@@ -55,6 +55,7 @@ void Chip8::LoadROM(char const* filename){
     }
     else {
         std::cout << "Error opening file.\n" << std::endl;
+		std::cout << filename << std::endl;
         std::exit(-1);
     }
 }

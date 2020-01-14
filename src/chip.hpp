@@ -20,8 +20,8 @@ const unsigned int VIDEO_HEIGHT = 32;
 class Chip8{
 	public:
 		Chip8();
-		std::uint8_t keypad[16];
-        std::uint32_t video[64 * 32];
+		std::uint8_t keypad[16]{};
+        std::uint32_t video[64 * 32]{};
 
 		void LoadROM(char const* filename);
 		void Cycle();
